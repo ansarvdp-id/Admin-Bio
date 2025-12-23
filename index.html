@@ -10,21 +10,53 @@
         .card { border: none; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .header-title { background: #198754; color: white; padding: 15px; text-align: center; margin-bottom: 20px; }
 
-        /* PDF / Print Styling (A4 Size) */
+        /* PDF / Print Styling (A4 Size - Black & White) */
         @media print {
             @page { size: A4; margin: 10mm; }
-            body { background: white; margin: 0; padding: 0; }
-            .no-print { display: none !important; } /* ইনপুট ফর্ম প্রিন্টে আসবে না */
-            #reportSection { display: block !important; }
+            body { background: white; margin: 0; padding: 0; font-family: 'Times New Roman', serif; }
             
-            table { width: 100%; border-collapse: collapse; font-size: 12pt; }
-            th, td { border: 1px solid black !important; padding: 5px; text-align: left; }
-            th { background-color: #f2f2f2 !important; -webkit-print-color-adjust: exact; }
+            /* স্ক্রিনে যা দেখাবে কিন্তু প্রিন্টে আসবে না */
+            .no-print { display: none !important; } 
             
-            .print-header { display: block !important; text-align: center; margin-bottom: 20px; }
-            .print-footer { display: flex !important; justify-content: space-between; margin-top: 50px; }
+            /* বুটস্ট্র্যাপ কন্টেইনার রিসেট (যাতে টেবিল পুরো পেজ জুড়ে আসে) */
+            .container, .row, .col-12 { 
+                max-width: 100% !important; 
+                width: 100% !important; 
+                margin: 0 !important; 
+                padding: 0 !important; 
+            }
+
+            #reportSection { display: block !important; width: 100%; }
+            
+            /* টেবিল ডিজাইন (সাদা কালো বর্ডার) */
+            .table-responsive { overflow: visible !important; }
+            table { width: 100% !important; border-collapse: collapse; font-size: 12pt; border: 1px solid black; }
+            
+            /* হেডার এবং বডি স্টাইল */
+            th, td { 
+                border: 1px solid black !important; 
+                padding: 8px 5px; 
+                text-align: left; 
+                color: black !important; /* টেক্সট কালার কালো */
+            }
+
+            /* হেডারের ব্যাকগ্রাউন্ড কালার রিমুভ করে সাদা করা হয়েছে */
+            thead, th { 
+                background-color: transparent !important; 
+                background: transparent !important;
+                font-weight: bold;
+                border-bottom: 2px solid black !important;
+            }
+            
+            /* প্রিন্ট হেডার */
+            .print-header { display: block !important; text-align: center; margin-bottom: 20px; border-bottom: 1px solid black; padding-bottom: 10px; }
+            
+            /* সিগনেচার এরিয়া রিমুভ করা হয়েছে */
+            .print-footer { display: none !important; }
         }
-        .print-header, .print-footer { display: none; }
+        
+        /* সাধারণ অবস্থায় প্রিন্ট হেডার লুকানো থাকবে */
+        .print-header { display: none; }
     </style>
 </head>
 <body>
@@ -36,7 +68,7 @@
 
 <div class="container mb-5">
 
-    <!-- PART 1: MASTER DATA SETTINGS (Add Trade, District, Upazila) -->
+    <!-- PART 1: MASTER DATA SETTINGS -->
     <div class="row no-print">
         <div class="col-12 mb-3">
             <h5 class="border-bottom pb-2">1. Master Data Settings (মেইন অ্যাপের জন্য ডাটা অ্যাড করুন)</h5>
@@ -110,15 +142,15 @@
 
         <!-- Data Table -->
         <div class="table-responsive">
-            <table class="table table-bordered table-striped">
-                <thead class="table-dark">
+            <table class="table table-bordered">
+                <thead>
                     <tr>
-                        <th width="5%">SL</th>
-                        <th width="20%">Student Name</th>
-                        <th width="20%">Father's Name</th>
-                        <th width="15%">Mobile</th>
-                        <th width="15%">District</th>
-                        <th width="15%">Upazila</th>
+                        <th style="width: 5%;">SL</th>
+                        <th style="width: 25%;">Student Name</th>
+                        <th style="width: 25%;">Father's Name</th>
+                        <th style="width: 15%;">Mobile</th>
+                        <th style="width: 15%;">District</th>
+                        <th style="width: 15%;">Upazila</th>
                     </tr>
                 </thead>
                 <tbody id="reportTableBody">
@@ -127,17 +159,7 @@
             </table>
         </div>
 
-        <!-- Print Footer (Signatures) -->
-        <div class="print-footer">
-            <div style="text-align: center;">
-                <p>___________________</p>
-                <p>Prepared By</p>
-            </div>
-            <div style="text-align: center;">
-                <p>___________________</p>
-                <p>Authorized Signature</p>
-            </div>
-        </div>
+        <!-- Footer removed as per request -->
     </div>
 
     <!-- Print Button Floating -->
@@ -243,7 +265,7 @@
 
       } catch (e) {
           console.error(e);
-          alert("Error fetching report data: " + e.message); // Indexing error might occur first time
+          alert("Error fetching report data: " + e.message);
       }
   };
 
